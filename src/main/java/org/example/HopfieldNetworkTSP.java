@@ -10,6 +10,13 @@ public class HopfieldNetworkTSP {
     private double A, B;
     static final double R = 6371;
 
+    /*
+    *
+    *https://github.com/search?q=tsp+hopfield+network&type=repositories
+    *https://github.com/23BanKAI/ConsoleAlfredTSP/blob/master/ConsoleAlfredTSP/Program.cs
+    *
+    * */
+
     public HopfieldNetworkTSP(Route route, double A, double B) {
         this.distances = fillDistanceMatrix(route);
         this.citiesCount = route.getCountCitiesCount();
