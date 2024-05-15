@@ -74,7 +74,6 @@ public class HopfieldNetwork {
             System.out.println("Unable to find solution");
             return null;
         }
-        return tour;
     }
 
     private int[] decodeTour() {
