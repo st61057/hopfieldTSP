@@ -1,20 +1,22 @@
-package org.example;
+package org.example.Hopfield;
+
+import org.example.Pub;
 
 import java.util.ArrayList;
 
 public class Route {
 
-    ArrayList<City> cities;
+    ArrayList<Pub> cities;
 
-    public Route(ArrayList<City> cities) {
+    public Route(ArrayList<Pub> cities) {
         this.cities = cities;
     }
 
-    public ArrayList<City> getCities() {
+    public ArrayList<Pub> getCities() {
         return cities;
     }
 
-    public void setCities(ArrayList<City> cities) {
+    public void setCities(ArrayList<Pub> cities) {
         this.cities = cities;
     }
 

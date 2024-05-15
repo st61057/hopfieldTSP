@@ -1,4 +1,6 @@
-package org.example;
+package org.example.Hopfield;
+
+import org.example.Pub;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -7,7 +9,7 @@ public class HopfieldNetwork {
     private double[][] distances;
     private double[][] neurons;
     private int citiesCount;
-    static final double R = 6371;
+    public static final double R = 6371;
 
     private HopfieldConfig hopfieldConfig;
 
@@ -34,15 +36,15 @@ public class HopfieldNetwork {
         double[][] distanceMatrix = new double[count][count];
 
         for (int i = 0; i < count; i++) {
-            City currentCity = route.getCities().get(i);
+            Pub currentPub = route.getCities().get(i);
             for (int j = 0; j < count; j++) {
-                City calculatedCity = route.getCities().get(j);
-                if (currentCity == calculatedCity) {
+                Pub calculatedPub = route.getCities().get(j);
+                if (currentPub == calculatedPub) {
                     distanceMatrix[i][j] = 0;
                 } else {
-                    distanceMatrix[i][j] = R * Math.acos(Math.sin(currentCity.getX()) * Math.sin(calculatedCity.getX())
-                            + Math.cos(currentCity.getY() - calculatedCity.getY())
-                            * Math.cos(calculatedCity.getX()) * Math.cos(currentCity.getX()));
+                    distanceMatrix[i][j] = R * Math.acos(Math.sin(currentPub.getLat()) * Math.sin(calculatedPub.getLat())
+                            + Math.cos(currentPub.getLon() - calculatedPub.getLon())
+                            * Math.cos(calculatedPub.getLat()) * Math.cos(currentPub.getLat()));
                 }
             }
         }
