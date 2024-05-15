@@ -40,7 +40,7 @@ public class Path implements Comparable<Path> {
         for (int i = 0; i < pubsList.size() - 1; i++) {
             distance += countDistance(pubsList.get(i), pubsList.get(i + 1));
         }
-        distance += countDistance(pubsList.get(pubsList.size()), pubsList.get(0));
+        distance += countDistance(pubsList.get(pubsList.size() - 1), pubsList.get(0));
         return distance;
     }
 

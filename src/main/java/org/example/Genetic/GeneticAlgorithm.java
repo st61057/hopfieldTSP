@@ -23,6 +23,7 @@ public class GeneticAlgorithm {
     public Path geneticEvolution(Population population, int evolutionCount) {
 
         Path currentBestPath = population.calculateBestRoute();
+        System.out.println("Default best way - " + currentBestPath.getDistance());
         for (int i = 0; i < evolutionCount; i++) {
             population = geneticAlgorithm(population);
 
@@ -30,6 +31,7 @@ public class GeneticAlgorithm {
             if (populationBestRoute.getDistance() < currentBestPath.getDistance()) {
                 currentBestPath = populationBestRoute.duplicatePath();
             }
+            System.out.println("Evolution count: " + i + " distance: " + currentBestPath.getDistance());
         }
         return currentBestPath;
     }
@@ -158,13 +160,13 @@ public class GeneticAlgorithm {
     }
 
     public void mutation(Path path) {
-        int randomSwapPosition = getRandomNumber(0,path.getPubsList().size());
+        int randomSwapPosition = getRandomNumber(0, path.getPubsList().size());
         Pub randomSelectedPub = path.getPubsList().get(randomSwapPosition);
         path.getPubsList().remove(randomSwapPosition);
 
         int tempPosition;
         do {
-            tempPosition = getRandomNumber(0,path.getPubsList().size());
+            tempPosition = getRandomNumber(0, path.getPubsList().size());
         } while (tempPosition == randomSwapPosition);
         path.getPubsList().add(tempPosition, randomSelectedPub);
     }

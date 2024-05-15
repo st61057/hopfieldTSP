@@ -17,7 +17,7 @@ public class Loader {
     public ArrayList<Pub> loadFile() {
         try {
             ArrayList<Pub> loadedPubs = new ArrayList<>();
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(this.getClass().getResource(pathToFile).getFile()), Charset.forName("CP1250")));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(this.getClass().getResource(pathToFile).getFile()), Charset.forName("windows-1250")));
             br.readLine();// skip hlavičky
             String line;
             while (((line = br.readLine()) != null)) {
