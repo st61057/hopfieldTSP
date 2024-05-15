@@ -51,14 +51,10 @@ public class HopfieldNetwork {
 
     private double[][] initializeNeurons(int size) {
         double[][] neurons = new double[size][size];
-        Random random = new Random(67);
+        Random random = new Random(795);
         for (int i = 0; i < citiesCount; i++) {
             for (int j = 0; j < citiesCount; j++) {
-                if (i == j) {
-                    neurons[i][j] = 0;
-                } else {
-                    neurons[i][j] = random.nextBoolean() ? 1 : -1;
-                }
+                neurons[i][j] = random.nextBoolean() ? 1 : -1;
             }
         }
         return neurons;
@@ -73,8 +69,10 @@ public class HopfieldNetwork {
         int[] tour = decodeTour();
         if (tour != null) {
             System.out.println("Successfully decoded TSP tour: " + Arrays.toString(tour));
+            return tour;
         } else {
-            System.out.println("Failed to decode a valid TSP tour.");
+            System.out.println("Unable to find solution");
+            return null;
         }
         return tour;
     }
@@ -92,7 +90,6 @@ public class HopfieldNetwork {
             tour[j] = maxIdx;
         }
         if (Arrays.stream(tour).distinct().count() != citiesCount) {
-            System.out.println("Unable to find solution");
             return null;
         }
         return tour;
@@ -114,10 +111,10 @@ public class HopfieldNetwork {
 
     private double getChange(int city, int position) {
         double newState = -neurons[city][position];
-        double a_term = hopfieldConfig.getA() * (Arrays.stream(activations()[city]).sum() - sigmoid(neurons[city][position]));
-        double b_term = hopfieldConfig.getB() * (Arrays.stream(activations()).mapToDouble(row -> row[position]).sum() - sigmoid(neurons[city][position]));
-        double d_term = hopfieldConfig.getD() * _neighbor_weights(city, position);
-        return newState - a_term - b_term - d_term;
+        double a_result = hopfieldConfig.getA() * (Arrays.stream(activations()[city]).sum() - sigmoid(neurons[city][position]));
+        double b_result = hopfieldConfig.getB() * (Arrays.stream(activations()).mapToDouble(row -> row[position]).sum() - sigmoid(neurons[city][position]));
+        double d_result = hopfieldConfig.getD() * _neighbor_weights(city, position);
+        return newState - a_result - b_result - d_result;
     }
 
     private double _neighbor_weights(int city, int position) {
@@ -133,7 +130,7 @@ public class HopfieldNetwork {
     }
 
     private double sigmoid(double x) {
-        return 1 / (1 + Math.exp(-x / hopfieldConfig.getConvergence()));//U0 mění konvergenci k hodnotam hraničním
+        return 1 / (1 + Math.exp(-x / hopfieldConfig.getConvergence())); // mění konvergenci k hraničním hodnotám
     }
 
     private double[][] activations() {
