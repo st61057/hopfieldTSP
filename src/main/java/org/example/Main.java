@@ -11,6 +11,7 @@ import org.example.Hopfield.HopfieldUtils;
 import org.example.Hopfield.Route;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,24 +19,36 @@ public class Main {
 //        Loader loader = new Loader("Pubs.csv");
         ArrayList<Pub> defaultLoadedList = defaultPubs()/*.loadFile()*/;
         GeneticUtils geneticUtils = new GeneticUtils();
+
+        int evolutionGenCount = 150;
+        int countHCHN = 1000;
+
+        long startTimeGen = System.nanoTime();
         Population defaultPopulation = geneticUtils.createInitialPopulation(2000, defaultLoadedList);
         GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(defaultLoadedList, 10, 0.05, 5);
-        System.out.println("Genetic algorithm result: " + geneticAlgorithm.geneticEvolution(defaultPopulation, 150).getDistance() + "\n");
-
+        System.out.println("Genetic algorithm result: " + geneticAlgorithm.geneticEvolution(defaultPopulation, evolutionGenCount).getDistance() + "\n");
+        long endTimeGen = System.nanoTime();
+        System.out.println("Gen: " + TimeUnit.NANOSECONDS.toMillis((endTimeGen - startTimeGen)));
 
         HillClimb hillClimb = new HillClimb(5);
-        Route resultHillClimb = hillClimb.simpleHillClimb(new Route(defaultLoadedList), 10000);
+        long startTimeHill = System.nanoTime();
+        Route resultHillClimb = hillClimb.simpleHillClimb(new Route(defaultLoadedList), countHCHN);
         System.out.println("Hill climb result: " + hillClimb.calculateDistance(resultHillClimb) + "\n");
+        long endTimeHill = System.nanoTime();
+        System.out.println("Hill: " + TimeUnit.NANOSECONDS.toMillis((endTimeHill - startTimeHill)));
 
         Route route = new Route(defaultLoadedList);
+        long startTimeHop = System.nanoTime();
         HopfieldNetwork hopfieldNetwork = new HopfieldNetwork(route, new HopfieldConfig());
-        int[] resultHopfield = hopfieldNetwork.run(1000);
+        int[] resultHopfield = hopfieldNetwork.run(countHCHN);
         if (resultHopfield != null) {
             HopfieldUtils hopfieldUtils = new HopfieldUtils(defaultLoadedList);
             System.out.println("Hopfield result : " + hopfieldUtils.calculateHopfieldDistance(resultHopfield));
         } else {
             System.out.println("Hopfield couldn't find result");
         }
+        long endTimeHop = System.nanoTime();
+        System.out.println("Hop: " + TimeUnit.NANOSECONDS.toMillis((endTimeHop - startTimeHop)));
     }
 
     public static ArrayList<Pub> defaultPubs() {
